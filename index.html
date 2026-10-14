@@ -1,156 +1,3 @@
-here<!DOCTYPE html>
-<html lang="hi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EditAI Studio</title>
-
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: #0f1016;
-            color: #ffffff;
-            padding: 20px;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        h1 {
-            color: #00d2ff;
-            font-size: 28px;
-            margin-bottom: 5px;
-        }
-
-        header p {
-            color: #8b8b9e;
-            font-size: 14px;
-        }
-
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .card {
-            background: linear-gradient(135deg, #1e1f29, #2d2f3d);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            border: 1px solid rgba(255,255,255,0.05);
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        .card:active {
-            transform: scale(0.98);
-        }
-
-        .card h3 {
-            color: #ff3366;
-            margin-bottom: 8px;
-            font-size: 18px;
-        }
-
-        .card p {
-            color: #cccccc;
-        }
-
-        #output {
-            margin-top: 20px;
-            padding: 15px;
-            background: #161821;
-            border-radius: 8px;
-            text-align: center;
-            color: #00ffcc;
-            font-weight: bold;
-        }
-
-        /* Advertisement Box */
-        .ad-box {
-            background: #181923;
-            border: 1px dashed #555866;
-            border-radius: 10px;
-            min-height: 100px;
-            margin: 20px 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #777;
-            font-size: 12px;
-        }
-
-        .ad-label {
-            text-align: center;
-            color: #666;
-            margin-bottom: 5px;
-            font-size: 11px;
-        }
-    </style>
-</head>
-
-<body>
-
-<div class="container">
-
-    <header>
-        <h1>EditAI Studio</h1>
-        <p>AI-Powered Video & Photo Creator Suite</p>
-    </header>
-
-    <!-- TOP AD -->
-    <div class="ad-label">Advertisement</div>
-    <div class="ad-box" id="topAd">
-        Ad will appear here
-    </div>
-
-    <div class="card" onclick="runTool('Video Editor')">
-        <h3>🎬 Video Editor</h3>
-        <p>Multi-track timeline, chroma key, and filters.</p>
-    </div>
-
-    <div class="card" onclick="runTool('Photo Editor')">
-        <h3>✨ Photo Editor</h3>
-        <p>AI object removal, background blur, and color grading.</p>
-    </div>
-
-    <div class="card" onclick="runTool('Templates')">
-        <h3>📋 Templates</h3>
-        <p>Reels & Shorts ready-to-use professional templates.</p>
-    </div>
-
-    <div id="output">
-        App is ready. Select a module above!
-    </div>
-
-    <!-- BOTTOM AD -->
-    <div class="ad-label">Advertisement</div>
-    <div class="ad-box" id="bottomAd">
-        Ad will appear here
-    </div>
-
-</div>
-
-<script>
-    function runTool(toolName) {
-        const outputBox = document.getElementById('output');
-
-        outputBox.innerText =
-            toolName + " successfully opened!";
-
-        console.log(toolName + " clicked by user.");
-    }
-</script>
-
 <!DOCTYPE html>
 <html lang="hi">
 <head>
@@ -159,45 +6,136 @@ here<!DOCTYPE html>
     <title>EditAI Studio</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #0f1016; color: #ffffff; padding: 20px; }
-        header { text-align: center; margin-bottom: 30px; }
-        h1 { color: #00d2ff; font-size: 28px; margin-bottom: 5px; }
-        p { color: #8b8b9e; font-size: 14px; }
+        body { background-color: #0b0c10; color: #ffffff; padding: 15px; }
+        header { text-align: center; margin-bottom: 25px; }
+        h1 { color: #00d2ff; font-size: 26px; margin-bottom: 5px; }
+        p { color: #8b8b9e; font-size: 13px; }
         .container { max-width: 600px; margin: 0 auto; }
-        .card { background: linear-gradient(135deg, #1e1f29, #2d2f3d); border-radius: 12px; padding: 20px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); cursor: pointer; transition: transform 0.2s; }
-        .card:active { transform: scale(0.98); }
-        .card h3 { color: #ff3366; margin-bottom: 8px; font-size: 18px; }
-        .card p { color: #cccccc; }
-        #output { margin-top: 20px; padding: 15px; background: #161821; border-radius: 8px; text-align: center; color: #00ffcc; font-weight: bold; }
+        
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+        .card { background: linear-gradient(135deg, #1f2833, #0b0c10); border-radius: 12px; padding: 18px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.08); cursor: pointer; transition: transform 0.2s, border-color 0.2s; }
+        .card:active { transform: scale(0.96); }
+        .card:hover { border-color: #66fcf1; }
+        .card h3 { color: #66fcf1; font-size: 16px; margin-bottom: 5px; }
+        .card p { color: #c5c6c7; font-size: 11px; }
+
+        .workspace { background: #1f2833; border-radius: 12px; padding: 20px; display: none; margin-top: 15px; border: 1px solid #45a29e; }
+        .workspace h2 { color: #66fcf1; font-size: 18px; margin-bottom: 12px; }
+        
+        .btn-back { background: #45a29e; color: #0b0c10; border: none; padding: 8px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-bottom: 15px; }
+        .btn-action { background: #66fcf1; color: #0b0c10; border: none; padding: 10px; width: 100%; border-radius: 8px; font-weight: bold; margin-top: 10px; cursor: pointer; }
+        
+        .control-group { margin-bottom: 12px; }
+        .control-group label { display: block; font-size: 12px; margin-bottom: 5px; color: #c5c6c7; }
+        .control-group input[type="range"] { width: 100%; accent-color: #66fcf1; }
+
+        .template-item { background: #0b0c10; padding: 12px; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .template-item button { background: #66fcf1; border: none; padding: 5px 10px; border-radius: 4px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
-    <div class="container">
+
+    <div class="container" id="main-menu">
         <header>
             <h1>EditAI Studio</h1>
-            <p>AI-Powered Video & Photo Creator Suite</p>
+            <p>Professional AI Creator & Editing Suite</p>
         </header>
-        <div class="card" onclick="runTool('Video Editor')">
-            <h3>🎬 Video Editor</h3>
-            <p>Multi-track timeline, chroma key, and filters.</p>
+
+        <div class="grid">
+            <div class="card" onclick="openModule('video')">
+                <h3>🎬 Video Editor</h3>
+                <p>Timeline & Chroma Key</p>
+            </div>
+            <div class="card" onclick="openModule('photo')">
+                <h3>✨ Photo Editor</h3>
+                <p>AI Removal & Filters</p>
+            </div>
+            <div class="card" onclick="openModule('templates')">
+                <h3>📋 Templates</h3>
+                <p>CapCut Style Reels</p>
+            </div>
+            <div class="card" onclick="openModule('color')">
+                <h3>🎨 Color Grading</h3>
+                <p>CINEMATIC LUTs & Sliders</p>
+            </div>
         </div>
-        <div class="card" onclick="runTool('Photo Editor')">
-            <h3>✨ Photo Editor</h3>
-            <p>AI object removal, background blur, and color grading.</p>
-        </div>
-        <div class="card" onclick="runTool('Templates')">
-            <h3>📋 Templates</h3>
-            <p>Reels & Shorts ready-to-use professional templates.</p>
-        </div>
-        <div id="output">App is ready. Select a module above!</div>
     </div>
+
+    <!-- Video Editor Workspace -->
+    <div class="container workspace" id="ws-video">
+        <button class="btn-back" onclick="goHome()">⬅ Back</button>
+        <h2>🎬 Advanced Video Editor</h2>
+        <p>Multi-track timeline and professional video controls.</p>
+        <button class="btn-action" onclick="alert('Video Exported Successfully!')">Export Video</button>
+    </div>
+
+    <!-- Photo Editor Workspace -->
+    <div class="container workspace" id="ws-photo">
+        <button class="btn-back" onclick="goHome()">⬅ Back</button>
+        <h2>✨ AI Photo Editor</h2>
+        <p>Remove backgrounds and enhance details instantly.</p>
+        <button class="btn-action" onclick="alert('Photo Processed by AI!')">Apply AI Enhance</button>
+    </div>
+
+    <!-- Templates Workspace -->
+    <div class="container workspace" id="ws-templates">
+        <button class="btn-back" onclick="goHome()">⬅ Back</button>
+        <h2>📋 CapCut Style Templates</h2>
+        <div class="template-item">
+            <span>🔥 Cinematic 3D beat</span>
+            <button onclick="alert('Template Applied!')">Use</button>
+        </div>
+        <div class="template-item">
+            <span>⚡ Smooth Velocity</span>
+            <button onclick="alert('Template Applied!')">Use</button>
+        </div>
+        <div class="template-item">
+            <span>✨ Aesthetic Glow</span>
+            <button onclick="alert('Template Applied!')">Use</button>
+        </div>
+    </div>
+
+    <!-- Color Grading Workspace -->
+    <div class="container workspace" id="ws-color">
+        <button class="btn-back" onclick="goHome()">⬅ Back</button>
+        <h2>🎨 Advanced Color Grading</h2>
+        
+        <div class="control-group">
+            <label>Brightness</label>
+            <input type="range" min="0" max="100" value="50">
+        </div>
+        <div class="control-group">
+            <label>Contrast</label>
+            <input type="range" min="0" max="100" value="50">
+        </div>
+        <div class="control-group">
+            <label>Saturation</label>
+            <input type="range" min="0" max="100" value="50">
+        </div>
+        <div class="control-group">
+            <label>Temperature (Teal & Orange)</label>
+            <input type="range" min="0" max="100" value="50">
+        </div>
+
+        <button class="btn-action" onclick="alert('Color Grading Saved!')">Save Preset</button>
+    </div>
+
     <script>
-        function runTool(toolName) {
-            document.getElementById('output').innerText = toolName + " successfully opened!";
+        function openModule(type) {
+            document.getElementById('main-menu').style.display = 'none';
+            document.querySelectorAll('.workspace').forEach(el => el.style.display = 'none');
+            
+            if(type === 'video') document.getElementById('ws-video').style.display = 'block';
+            if(type === 'photo') document.getElementById('ws-photo').style.display = 'block';
+            if(type === 'templates') document.getElementById('ws-templates').style.display = 'block';
+            if(type === 'color') document.getElementById('ws-color').style.display = 'block';
+        }
+
+        function goHome() {
+            document.querySelectorAll('.workspace').forEach(el => el.style.display = 'none');
+            document.getElementById('main-menu').style.display = 'block';
         }
     </script>
-</body>
-</html>
 
 </body>
 </html>
