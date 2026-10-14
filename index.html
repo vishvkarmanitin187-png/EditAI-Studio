@@ -1,202 +1,363 @@
 <!DOCTYPE html>
+
 <html lang="hi">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>EditAI Studio - CapCut Style Editor</title>
+
     <style>
+
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
         body { background-color: #0f1015; color: #ffffff; padding: 10px; }
+
         
+
         /* Preloader */
+
         #preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0f1015; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; transition: opacity 0.4s ease; }
+
         .spinner { width: 45px; height: 45px; border: 4px solid rgba(0, 210, 255, 0.2); border-top: 4px solid #00d2ff; border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 12px; }
+
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
         header { text-align: center; margin-bottom: 20px; }
+
         h1 { color: #00d2ff; font-size: 24px; margin-bottom: 3px; }
+
         p { color: #8b8b9e; font-size: 12px; }
+
         .container { max-width: 650px; margin: 0 auto; }
+
         
+
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+
         .card { background: linear-gradient(135deg, #181924, #0f1015); border-radius: 10px; padding: 15px; text-align: center; border: 1px solid rgba(255,255,255,0.06); cursor: pointer; }
+
         .card h3 { color: #00d2ff; font-size: 15px; margin-bottom: 4px; }
+
         .card p { color: #a0a0b0; font-size: 11px; }
 
         /* CapCut Workspace Style */
+
         .workspace { background: #161722; border-radius: 12px; padding: 15px; display: none; margin-top: 10px; border: 1px solid #2a2c3d; }
+
         .btn-back { background: #2a2c3d; color: #ffffff; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: bold; cursor: pointer; margin-bottom: 12px; }
+
         
+
         .preview-screen { width: 100%; height: 200px; background: #000; border-radius: 8px; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; border: 1px solid #2a2c3d; }
+
         #video-preview { width: 100%; height: 100%; object-fit: contain; display: none; }
+
         .preview-placeholder { color: #6c6d7e; font-size: 12px; text-align: center; padding: 15px; }
 
         /* CapCut Style Timeline */
+
         .timeline-section { background: #0f1015; border-radius: 8px; padding: 10px; margin-top: 12px; border: 1px solid #2a2c3d; }
+
         .timeline-header { display: flex; justify-content: space-between; font-size: 11px; color: #8b8b9e; margin-bottom: 8px; }
+
         .tracks-container { display: flex; flex-direction: column; gap: 6px; }
+
         .track { background: #222433; border-radius: 6px; padding: 8px; display: flex; align-items: center; justify-content: space-between; border-left: 4px solid #00d2ff; }
+
         .track.audio { border-left-color: #ff3366; }
+
         .track.text-track { border-left-color: #ffcc00; }
+
         .track-name { font-size: 11px; font-weight: bold; color: #d0d0e0; }
 
         /* Editing Toolbar */
+
         .editor-tools { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 12px; }
+
         .tool-btn { background: #222433; color: #ffffff; border: 1px solid #2a2c3d; padding: 8px 4px; border-radius: 6px; font-size: 11px; text-align: center; cursor: pointer; }
+
         .tool-btn:active { background: #00d2ff; color: #000; }
 
         .btn-export { background: #00d2ff; color: #0f1015; border: none; padding: 10px; width: 100%; border-radius: 8px; font-weight: bold; font-size: 13px; margin-top: 15px; cursor: pointer; }
+
         
+
         .upload-trigger { background: #1f2233; border: 2px dashed #00d2ff; padding: 10px; border-radius: 8px; text-align: center; cursor: pointer; margin-bottom: 12px; font-size: 12px; color: #00d2ff; }
+
         .upload-trigger input { display: none; }
+
     </style>
+
 </head>
+
 <body>
 
     <div id="preloader">
+
         <div class="spinner"></div>
+
         <h2>EditAI Studio</h2>
+
         <p>Loading CapCut Engine...</p>
+
     </div>
 
     <div class="container" id="main-menu">
+
         <header>
+
             <h1>EditAI Studio</h1>
+
             <p>CapCut Style Creator & Multi-Track Studio</p>
+
         </header>
 
         <div class="grid">
+
             <div class="card" onclick="openModule('video')">
+
                 <h3>🎬 Video Editor</h3>
+
                 <p>Multi-track & Timeline</p>
+
             </div>
+
             <div class="card" onclick="openModule('templates')">
+
                 <h3>📋 Templates</h3>
+
                 <p>Reels & Shorts Styles</p>
+
             </div>
+
             <div class="card" onclick="openModule('photo')">
+
                 <h3>✨ Photo Editor</h3>
+
                 <p>AI Filters & Effects</p>
+
             </div>
+
             <div class="card" onclick="openModule('color')">
+
                 <h3>🎨 Color Grading</h3>
+
                 <p>Cinematic LUTs</p>
+
             </div>
+
         </div>
+
     </div>
 
     <!-- CapCut Style Video Editor Workspace -->
+
     <div class="container workspace" id="ws-video">
+
         <button class="btn-back" onclick="goHome()">⬅ Back</button>
+
         <h2>🎬 CapCut Studio Timeline</h2>
 
         <!-- Video Upload -->
+
         <div class="upload-trigger" onclick="document.getElementById('vid-file').click()">
+
             📁 Tap to Import Video Clip (.mp4)
+
             <input type="file" id="vid-file" accept="video/*" onchange="importVideo(event)">
+
         </div>
 
         <!-- Preview Screen -->
+
         <div class="preview-screen">
+
             <div class="preview-placeholder" id="ph-text">Preview Window (No Clip)</div>
+
             <video id="capcut-player" controls></video>
+
         </div>
 
         <!-- CapCut Multi-Track Timeline -->
+
         <div class="timeline-section">
+
             <div class="timeline-header">
+
                 <span>Timeline Tracks</span>
+
                 <span id="clip-duration">00:00</span>
+
             </div>
+
             <div class="tracks-container">
+
                 <div class="track">
+
                     <span class="track-name">📹 Video Track</span>
+
                     <span style="font-size: 10px; color: #8b8b9e;" id="v-track-name">Empty</span>
+
                 </div>
+
                 <div class="track audio">
+
                     <span class="track-name">🎵 Audio / BGM</span>
+
                     <span style="font-size: 10px; color: #8b8b9e;">Lo-Fi Beat.mp3</span>
+
                 </div>
+
                 <div class="track text-track">
+
                     <span class="track-name">💬 Auto Captions</span>
+
                     <span style="font-size: 10px; color: #8b8b9e;">Hinglish Text</span>
+
                 </div>
+
             </div>
+
         </div>
 
         <!-- Editing Toolbar (CapCut Style) -->
+
         <div class="editor-tools">
+
             <div class="tool-btn" onclick="alert('Split clicked!')">✂️ Split</div>
+
             <div class="tool-btn" onclick="alert('Speed 1.x adjusted!')">⚡ Speed</div>
+
             <div class="tool-btn" onclick="alert('Animation added!')">✨ FX</div>
+
             <div class="tool-btn" onclick="alert('Audio volume set!')">🔊 Volume</div>
+
         </div>
 
         <button class="btn-export" onclick="alert('Video Exported Successfully to Gallery!')">Export HD Video ↗</button>
+
     </div>
 
     <!-- Templates Workspace -->
+
     <div class="container workspace" id="ws-templates">
+
         <button class="btn-back" onclick="goHome()">⬅ Back</button>
+
         <h2>📋 Trending Templates</h2>
+
         <div class="card" style="text-align: left; margin-bottom: 10px;" onclick="alert('Template applied!')">
+
             <h3 style="color: #ff3366;">🔥 3D Zoom Effect Beat</h3>
+
             <p>1.2M Uses • CapCut Viral Style</p>
+
         </div>
+
         <div class="card" style="text-align: left;" onclick="alert('Template applied!')">
+
             <h3 style="color: #ffcc00;">⚡ Smooth Velocity Transition</h3>
+
             <p>850K Uses • Cinematic Look</p>
+
         </div>
+
     </div>
 
     <!-- Photo & Color Workspace -->
+
     <div class="container workspace" id="ws-photo">
+
         <button class="btn-back" onclick="goHome()">⬅ Back</button>
+
         <h2>✨ AI Photo & Color Grading</h2>
+
         <p style="font-size: 12px; margin-bottom: 10px;">Adjust cinematic contrast & saturation:</p>
+
         <div style="margin-bottom: 10px;">
+
             <label style="font-size: 11px;">Teal & Orange LUT</label>
+
             <input type="range" style="width: 100%; accent-color: #00d2ff;" min="0" max="100" value="70">
+
         </div>
+
         <button class="btn-export" onclick="alert('Preset Saved!')">Apply Filter</button>
+
     </div>
 
     <script>
+
         window.addEventListener('load', function() {
+
             setTimeout(function() {
+
                 const preloader = document.getElementById('preloader');
+
                 preloader.style.opacity = '0';
+
                 setTimeout(() => { preloader.style.display = 'none'; document.getElementById('main-menu').style.display = 'block'; }, 400);
+
             }, 1000);
+
         });
 
         function openModule(type) {
+
             document.getElementById('main-menu').style.display = 'none';
+
             document.querySelectorAll('.workspace').forEach(el => el.style.display = 'none');
+
             if(type === 'video' || type === 'templates') document.getElementById('ws-video').style.display = 'block';
+
             if(type === 'templates') document.getElementById('ws-templates').style.display = 'block';
+
             if(type === 'photo' || type === 'color') document.getElementById('ws-photo').style.display = 'block';
+
         }
 
         function goHome() {
+
             document.querySelectorAll('.workspace').forEach(el => el.style.display = 'none');
+
             document.getElementById('main-menu').style.display = 'block';
+
         }
 
         function importVideo(event) {
+
             const file = event.target.files[0];
+
             if (file) {
+
                 const player = document.getElementById('capcut-player');
+
                 const placeholder = document.getElementById('ph-text');
+
                 
+
                 player.src = URL.createObjectURL(file);
+
                 placeholder.style.display = 'none';
+
                 player.style.display = 'block';
+
                 player.load();
+
                 
+
                 document.getElementById('v-track-name').innerText = file.name.substring(0, 15) + '...';
+
             }
+
         }
+
     </script>
+
 </body>
+
 </html>
