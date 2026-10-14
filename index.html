@@ -7,10 +7,50 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: #0b0c10; color: #ffffff; padding: 15px; }
+        
+        /* Preloader Styles */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0b0c10;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(102, 252, 241, 0.2);
+            border-top: 4px solid #66fcf1;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 15px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        #preloader h2 {
+            color: #00d2ff;
+            font-size: 22px;
+            letter-spacing: 1px;
+        }
+        #preloader p {
+            color: #8b8b9e;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
         header { text-align: center; margin-bottom: 25px; }
         h1 { color: #00d2ff; font-size: 26px; margin-bottom: 5px; }
         p { color: #8b8b9e; font-size: 13px; }
-        .container { max-width: 600px; margin: 0 auto; }
+        .container { max-width: 600px; margin: 0 auto; display: none; } /* Initially hidden for preloader */
         
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
         .card { background: linear-gradient(135deg, #1f2833, #0b0c10); border-radius: 12px; padding: 18px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.08); cursor: pointer; transition: transform 0.2s, border-color 0.2s; }
@@ -25,4 +65,201 @@
         .btn-back { background: #45a29e; color: #0b0c10; border: none; padding: 8px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-bottom: 15px; }
         .btn-action { background: #66fcf1; color: #0b0c10; border: none; padding: 10px; width: 100%; border-radius: 8px; font-weight: bold; margin-top: 10px; cursor: pointer; }
         
-        .control
+        .control-group { margin-bottom: 12px; }
+        .control-group label { display: block; font-size: 12px; margin-bottom: 5px; color: #c5c6c7; }
+        .control-group input[type="range"] { width: 100%; accent-color: #66fcf1; }
+
+        .template-item { background: #0b0c10; padding: 12px; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .template-item button { background: #66fcf1; border: none; padding: 5px 10px; border-radius: 4px; font-weight: bold; cursor: pointer; }
+
+        .extra-section { background: #1f2833; border-radius: 12px; padding: 18px; margin-top: 20px; border: 1px solid rgba(255,255,255,0.08); text-align: center; }
+        .extra-section h3 { color: #66fcf1; font-size: 15px; margin-bottom: 10px; }
+        .upload-box { border: 2px dashed #45a29e; padding: 15px; border-radius: 8px; margin-bottom: 12px; cursor: pointer; background: rgba(255,255,255,0.02); }
+        .upload-box input { display: none; }
+        #preview-img { max-width: 100%; max-height: 150px; border-radius: 6px; margin-top: 10px; display: none; }
+        
+        .insta-btn { display: inline-block; background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); color: white; padding: 10px 20px; border-radius: 20px; text-decoration: none; font-weight: bold; font-size: 13px; margin-top: 5px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+
+        .video-container { width: 100%; background: #121212; border-radius: 8px; overflow: hidden; margin-bottom: 15px; text-align: center; border: 1px solid #45a29e; min-height: 180px; display: flex; align-items: center; justify-content: center; }
+        #video-player { width: 100%; max-height: 220px; display: none; background: #000; }
+        .video-placeholder { color: #8b8b9e; font-size: 13px; padding: 20px; }
+        .timeline-box { background: #0b0c10; padding: 10px; border-radius: 6px; margin-top: 10px; border: 1px dashed #45a29e; }
+        .timeline-track { background: #ff3366; color: white; padding: 5px 10px; border-radius: 4px; font-size: 11px; display: inline-block; margin-top: 5px; }
+    </style>
+</head>
+<body>
+
+    <!-- Loading Screen (Preloader) -->
+    <div id="preloader">
+        <div class="spinner"></div>
+        <h2>EditAI Studio</h2>
+        <p>Loading AI Creator Suite...</p>
+    </div>
+
+    <div class="container" id="main-menu">
+        <header>
+            <h1>EditAI Studio</h1>
+            <p>Professional AI Creator & Editing Suite</p>
+        </header>
+
+        <div class="grid">
+            <div class="card" onclick="openModule('video')">
+                <h3>🎬 Video Editor</h3>
+                <p>Timeline & Chroma Key</p>
+            </div>
+            <div class="card" onclick="openModule('photo')">
+                <h3>✨ Photo Editor</h3>
+                <p>AI Removal & Filters</p>
+            </div>
+            <div class="card" onclick="openModule('templates')">
+                <h3>📋 Templates</h3>
+                <p>CapCut Style Reels</p>
+            </div>
+            <div class="card" onclick="openModule('color')">
+                <h3>🎨 Color Grading</h3>
+                <p>CINEMATIC LUTs & Sliders</p>
+            </div>
+        </div>
+
+        <div class="extra-section">
+            <h3>📷 Quick Photo Uploader</h3>
+            <div class="upload-box" onclick="document.getElementById('file-input').click()">
+                <p style="color: #66fcf1;">Tap here to upload a photo to edit</p>
+                <input type="file" id="file-input" accept="image/*" onchange="previewImage(event)">
+            </div>
+            <img id="preview-img" alt="Uploaded Preview">
+        </div>
+
+        <div class="extra-section" style="margin-top: 15px;">
+            <h3>🌐 Connect with Creator</h3>
+            <p style="margin-bottom: 10px;">Follow for more updates and app tutorials!</p>
+            <a href="https://instagram.com/" target="_blank" class="insta-btn">📸 Follow on Instagram</a>
+        </div>
+    </div>
+
+    <!-- Video Editor Workspace -->
+    <div class="container workspace" id="ws-video">
+        <button class="btn-back" onclick="goHome()">⬅ Back</button>
+        <h2>🎬 Advanced Video Editor</h2>
+        <p>Upload a video from your device to preview and edit.</p>
+        
+        <div class="upload-box" style="margin-top: 15px;" onclick="document.getElementById('video-input').click()">
+            <p style="color: #66fcf1;">📁 Tap to Upload Video File (.mp4)</p>
+            <input type="file" id="video-input" accept="video/mp4,video/webm,video/quicktime" onchange="loadVideo(event)">
+        </div>
+
+        <div class="video-container" id="vid-container-box">
+            <div class="video-placeholder" id="vid-placeholder">No video selected yet. Upload an MP4 video to preview.</div>
+            <video id="video-player" controls></video>
+        </div>
+
+        <div class="timeline-box">
+            <p style="font-size: 12px; color: #c5c6c7;">Multi-Track Timeline</p>
+            <div class="timeline-track" id="track-info">Video Track: No clip loaded</div>
+        </div>
+
+        <div class="control-group" style="margin-top: 15px;">
+            <label>Video Volume</label>
+            <input type="range" id="vol-slider" min="0" max="1" step="0.1" value="1" onchange="changeVolume(this.value)">
+        </div>
+
+        <button class="btn-action" onclick="alert('Video Exported Successfully!')">Export Video</button>
+    </div>
+
+    <!-- Photo Editor Workspace -->
+    <div class="container workspace" id="ws-photo">
+        <button class="btn-back" onclick="goHome()">⬅ Back</button>
+        <h2>✨ AI Photo Editor</h2>
+        <p>Remove backgrounds and enhance details instantly.</p>
+        <button class="btn-action" onclick="alert('Photo Processed by AI!')">Apply AI Enhance</button>
+    </div>
+
+    <!-- Templates Workspace -->
+    <div class="container workspace" id="ws-templates">
+        <button class="btn-back" onclick="goHome()">⬅ Back</button>
+        <h2>📋 CapCut Style Templates</h2>
+        <div class="template-item">
+            <span>🔥 Cinematic 3D beat</span>
+            <button onclick="alert('Template Applied!')">Use</button>
+        </div>
+        <div class="template-item">
+            <span>⚡ Smooth Velocity</span>
+            <button onclick="alert('Template Applied!')">Use</button>
+        </div>
+    </div>
+
+    <!-- Color Grading Workspace -->
+    <div class="container workspace" id="ws-color">
+        <button class="btn-back" onclick="goHome()">⬅ Back</button>
+        <h2>🎨 Advanced Color Grading</h2>
+        <div class="control-group">
+            <label>Brightness</label>
+            <input type="range" min="50" max="150" value="100">
+        </div>
+        <div class="control-group">
+            <label>Contrast</label>
+            <input type="range" min="50" max="150" value="100">
+        </div>
+        <button class="btn-action" onclick="alert('Color Grading Saved!')">Save Preset</button>
+    </div>
+
+    <script>
+        // Hide preloader after page loads
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                const preloader = document.getElementById('preloader');
+                preloader.style.opacity = '0';
+                setTimeout(function() {
+                    preloader.style.display = 'none';
+                    document.getElementById('main-menu').style.display = 'block';
+                }, 500);
+            }, 1200); // 1.2 seconds loading animation
+        });
+
+        function openModule(type) {
+            document.getElementById('main-menu').style.display = 'none';
+            document.querySelectorAll('.workspace').forEach(el => el.style.display = 'none');
+            if(type === 'video') document.getElementById('ws-video').style.display = 'block';
+            if(type === 'photo') document.getElementById('ws-photo').style.display = 'block';
+            if(type === 'templates') document.getElementById('ws-templates').style.display = 'block';
+            if(type === 'color') document.getElementById('ws-color').style.display = 'block';
+        }
+
+        function goHome() {
+            document.querySelectorAll('.workspace').forEach(el => el.style.display = 'none');
+            document.getElementById('main-menu').style.display = 'block';
+        }
+
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = function(){
+                const output = document.getElementById('preview-img');
+                output.src = reader.result;
+                output.style.display = 'block';
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+
+        function loadVideo(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const videoPlayer = document.getElementById('video-player');
+                const placeholder = document.getElementById('vid-placeholder');
+                
+                videoPlayer.src = URL.createObjectURL(file);
+                placeholder.style.display = 'none';
+                videoPlayer.style.display = 'block';
+                videoPlayer.load();
+                
+                document.getElementById('track-info').innerText = "Video Track: " + file.name;
+            }
+        }
+
+        function changeVolume(val) {
+            const videoPlayer = document.getElementById('video-player');
+            videoPlayer.volume = val;
+        }
+    </script>
+
+</body>
+</html>
