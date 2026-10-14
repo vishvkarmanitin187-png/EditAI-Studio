@@ -31,6 +31,15 @@
 
         .template-item { background: #0b0c10; padding: 12px; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
         .template-item button { background: #66fcf1; border: none; padding: 5px 10px; border-radius: 4px; font-weight: bold; cursor: pointer; }
+
+        /* Extra Section Style for Photo Upload & Instagram */
+        .extra-section { background: #1f2833; border-radius: 12px; padding: 18px; margin-top: 20px; border: 1px solid rgba(255,255,255,0.08); text-align: center; }
+        .extra-section h3 { color: #66fcf1; font-size: 15px; margin-bottom: 10px; }
+        .upload-box { border: 2px dashed #45a29e; padding: 15px; border-radius: 8px; margin-bottom: 12px; cursor: pointer; }
+        .upload-box input { display: none; }
+        #preview-img { max-width: 100%; max-height: 150px; border-radius: 6px; margin-top: 10px; display: none; }
+        
+        .insta-btn { display: inline-block; background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); color: white; padding: 10px 20px; border-radius: 20px; text-decoration: none; font-weight: bold; font-size: 13px; margin-top: 5px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
     </style>
 </head>
 <body>
@@ -58,6 +67,22 @@
                 <h3>🎨 Color Grading</h3>
                 <p>CINEMATIC LUTs & Sliders</p>
             </div>
+        </div>
+
+        <!-- Real Photo Upload & Instagram Section -->
+        <div class="extra-section">
+            <h3>📷 Quick Photo Uploader</h3>
+            <div class="upload-box" onclick="document.getElementById('file-input').click()">
+                <p style="color: #66fcf1;">Tap here to upload a photo to edit</p>
+                <input type="file" id="file-input" accept="image/*" onchange="previewImage(event)">
+            </div>
+            <img id="preview-img" alt="Uploaded Preview">
+        </div>
+
+        <div class="extra-section" style="margin-top: 15px;">
+            <h3>🌐 Connect with Creator</h3>
+            <p style="margin-bottom: 10px;">Follow for more updates and app tutorials!</p>
+            <a href="https://instagram.com/" target="_blank" class="insta-btn">📸 Follow on Instagram</a>
         </div>
     </div>
 
@@ -134,6 +159,16 @@
         function goHome() {
             document.querySelectorAll('.workspace').forEach(el => el.style.display = 'none');
             document.getElementById('main-menu').style.display = 'block';
+        }
+
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = function(){
+                const output = document.getElementById('preview-img');
+                output.src = reader.result;
+                output.style.display = 'block';
+            };
+            reader.readAsDataURL(event.target.files[0]);
         }
     </script>
 
