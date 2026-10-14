@@ -1,0 +1,6 @@
+{
+  "name": "EditAI Studio",
+  "description": "Professional all-in-one AI Video Editor, Photo Editor, Thumbnail Maker, Audio Editor, and AI Creator",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
