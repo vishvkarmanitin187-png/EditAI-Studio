@@ -108,14 +108,90 @@ $("#renameBtn").onclick=()=>{const n=prompt("Project name",$("#projectName").tex
 
 $("#exportBtn").onclick=()=>$("#exportModal").classList.add("show");
 $("#closeExport").onclick=()=>$("#exportModal").classList.remove("show");
+
+async function exportWithFFmpeg(){
+  if(!selected || selected.type!=="video"){ $("#exportStatus").textContent="पहले video clip चुनें."; return; }
+  const status=$("#exportStatus"), progress=$("#exportProgress"), bar=$("#exportBar");
+  status.textContent="4K/MP4 export तैयार हो रहा है...";
+  progress.style.display="block"; bar.style.width="5%";
+  try{
+    if(!window.FFmpegWASM && !window.FFmpeg) throw new Error("FFmpeg library unavailable");
+    const FFmpegClass = window.FFmpeg?.FFmpeg;
+    const util = window.FFmpegUtil || {};
+    if(!FFmpegClass || !util.fetchFile) throw new Error("FFmpeg browser build not loaded");
+    const ffmpeg=new FFmpegClass();
+    ffmpeg.on("progress", ({progress:p})=>bar.style.width=Math.max(5,Math.min(100,Math.round(p*100)))+"%");
+    ffmpeg.on("log", ({message})=>{ if(message) status.textContent="Encoding: "+message.slice(-90); });
+    await ffmpeg.load({coreURL:"https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.js"});
+    const data=await util.fetchFile(selected.url);
+    await ffmpeg.writeFile("input",data);
+    const q=$("#exportQuality").value;
+    const scale=q==="2160"?"scale=-2:2160":q==="1080"?"scale=-2:1080":"scale=-2:720";
+    await ffmpeg.exec(["-i","input","-vf",scale,"-c:v","libx264","-preset","veryfast","-crf","23","-c:a","aac","output.mp4"]);
+    const out=await ffmpeg.readFile("output.mp4");
+    const blob=new Blob([out.buffer],{type:"video/mp4"});
+    const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`${($("#projectName").textContent||"editflux").replace(/[^a-z0-9_-]/gi,"_")}-${q}p.mp4`;a.click();
+    bar.style.width="100%";status.textContent="MP4 export complete.";
+  }catch(err){
+    console.error(err);
+    status.textContent="Advanced MP4 export उपलब्ध नहीं हुआ; WebM fallback शुरू किया जा रहा है.";
+    await exportWebM();
+  }
+}
+async function exportWebM(){
+  if(!selected||selected.type!=="video"){return}
+  if(!video.captureStream){$("#exportStatus").textContent="इस browser में export API उपलब्ध नहीं है.";return}
+  const stream=video.captureStream();
+  const rec=new MediaRecorder(stream,{mimeType:"video/webm"});
+  const chunks=[];rec.ondataavailable=e=>e.data.size&&chunks.push(e.data);
+  rec.onstop=()=>{const blob=new Blob(chunks,{type:"video/webm"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="editflux-export.webm";a.click();$("#exportStatus").textContent="WebM export complete.";};
+  video.currentTime=0;await video.play();rec.start();
+  video.onended=()=>{rec.stop();video.onended=null};
+}
 $("#startExport").onclick=async()=>{
- if(!selected||selected.type!=="video"){ $("#exportStatus").textContent="पहले video clip चुनें.";return }
- if(!video.captureStream){$("#exportStatus").textContent="इस browser में export API उपलब्ध नहीं है.";return}
- $("#exportStatus").textContent="Export शुरू हो रहा है...";
- const stream=video.captureStream();
- const rec=new MediaRecorder(stream,{mimeType:"video/webm"});
- const chunks=[];rec.ondataavailable=e=>e.data.size&&chunks.push(e.data);
- rec.onstop=()=>{const blob=new Blob(chunks,{type:"video/webm"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="editflux-export.webm";a.click();$("#exportStatus").textContent="Export complete.";};
- video.currentTime=0;await video.play();rec.start();
- video.onended=()=>{rec.stop();video.onended=null};
+  // For a real monetized deployment, this is where your verified rewarded-ad
+  // completion callback should unlock the export. No fake ad completion is used.
+  const q=$("#exportQuality").value;
+  if(q==="2160" && window.EDITFLUX_CONFIG?.ads?.enabled){
+    // Hook for a real rewarded-ad SDK. The SDK must call the success callback
+    // only after the provider confirms the reward.
+    $("#exportStatus").textContent="4K export requires a verified rewarded-ad completion.";
+    return;
+  }
+  await exportWithFFmpeg();
+};
+
+// Basic automatic captions using browser SpeechRecognition where supported.
+// This creates real timed text while the microphone is speaking; for uploaded
+// video transcription, connect /api/captions to a real speech-to-text service.
+function startAutoCaption(){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){openDrawer("<h3>Auto Captions</h3><p>इस browser में Speech Recognition उपलब्ध नहीं है। Uploaded-video captions के लिए real /api/captions service जोड़ें.</p>");return}
+  const rec=new SR(); rec.lang="hi-IN"; rec.continuous=true; rec.interimResults=false;
+  let started=Date.now();
+  rec.onresult=e=>{
+    for(let i=e.resultIndex;i<e.results.length;i++){
+      const phrase=e.results[i][0].transcript.trim(); if(!phrase)continue;
+      const d=document.createElement("div");d.className="textItem";d.textContent=phrase;
+      d.style.top="82%";d.style.fontSize="24px";d.style.background="#000b";d.style.padding="6px 12px";d.style.borderRadius="8px";
+      d.dataset.start=(Date.now()-started)/1000;$("#textLayer").appendChild(d);
+    }
+  };
+  rec.onerror=e=>console.warn(e);
+  rec.start();openDrawer("<h3>Auto Captions</h3><p>🎙 बोलना शुरू करें। Captions preview में जोड़े जा रहे हैं.</p><button class='primary' id='stopCap'>Stop</button>");
+  $("#stopCap").onclick=()=>rec.stop();
+}
+
+// Replace captions tool with real browser speech recognition option.
+const oldCaptionsTool=captionsTool;
+captionsTool=function(){
+ openDrawer(`<h3>Captions</h3><div class="grid">
+ <button class="option" id="autoCap">🎙 Auto Captions</button>
+ <button class="option" id="manualCap">Aa Manual</button>
+ <button class="option" id="translateCap">Translate</button>
+ </div>
+ <p class="note">Automatic uploaded-video transcription/translation requires a real backend API. Browser speech recognition works for supported browsers.</p>`);
+ $("#autoCap").onclick=startAutoCaption;
+ $("#manualCap").onclick=()=>textTool();
+ $("#translateCap").onclick=()=>openDrawer("<h3>Translate Captions</h3><p>Connect a translation API through /api/translate. API secrets must remain on the server.</p>");
 };
