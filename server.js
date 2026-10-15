@@ -281,6 +281,18 @@ app.post('/api/export', (req, res) => {
 // Static serve outputs for downloading
 app.use('/outputs', express.static(OUTPUT_DIR));
 
+// Serve static frontend build (dist) and SPA catch-all fallback
+const DIST_DIR = path.join(__dirname, 'dist');
+if (fs.existsSync(DIST_DIR)) {
+    app.use(express.static(DIST_DIR));
+    app.get('*', (req, res, next) => {
+        if (req.path.startsWith('/api') || req.path.startsWith('/outputs')) {
+            return next();
+        }
+        res.sendFile(path.join(DIST_DIR, 'index.html'));
+    });
+}
+
 // Error handling middleware
 app.use((err, req, res, next) => {
     console.error(err.stack);
