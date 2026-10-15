@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <title>EditFlux — Video Editor</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <button id="backBtn">✕</button>
+    <div class="projectName" id="projectName">New project</div>
+    <button id="renameBtn">⌄</button>
+    <div class="spacer"></div>
+    <button>⌕</button><span class="quality">HD</span>
+    <button id="exportBtn" class="next">Next ›</button>
+  </header>
+
+  <main>
+    <section class="previewWrap">
+      <div class="preview">
+        <video id="video" playsinline></video>
+        <img id="imageLayer" alt="">
+        <div id="textLayer"></div>
+        <div id="stickerLayer"></div>
+        <div id="emptyPreview">
+          <div class="bigPlus">＋</div>
+          <div>Video / Photo जोड़ें</div>
+          <input id="mediaInput" type="file" accept="video/*,image/*" multiple hidden>
+          <button id="chooseMedia">Media चुनें</button>
+        </div>
+      </div>
+      <div class="transport">
+        <button id="playBtn">▶</button>
+        <span id="timeLabel">00:00 / 00:00</span>
+        <button id="muteBtn">🔊</button>
+      </div>
+    </section>
+
+    <section class="timelinePanel">
+      <div class="timelineHead">
+        <span>Timeline</span>
+        <button id="addAudioBtn">＋ Add audio</button>
+        <input id="audioInput" type="file" accept="audio/*" hidden>
+      </div>
+      <div class="timeline" id="timeline">
+        <div class="playhead"></div>
+        <div id="clips"></div>
+      </div>
+    </section>
+
+    <section class="toolPanel" id="toolPanel">
+      <button data-tool="audio">🎵<small>Audio</small></button>
+      <button data-tool="text">Aa<small>Text</small></button>
+      <button data-tool="voice">🎙<small>Voice</small></button>
+      <button data-tool="captions">CC<small>Captions</small></button>
+      <button data-tool="adjust">◉<small>Adjust</small></button>
+      <button data-tool="filters">◒<small>Filters</small></button>
+      <button data-tool="overlay">▣<small>Overlay</small></button>
+      <button data-tool="effects">✦<small>Effects</small></button>
+      <button data-tool="cutout">◉<small>Cutout</small></button>
+      <button data-tool="sticker">☺<small>Sticker</small></button>
+      <button data-tool="transform">↔<small>Transform</small></button>
+    </section>
+
+    <section class="drawer" id="drawer"></section>
+  </main>
+
+  <div class="modal" id="exportModal">
+    <div class="modalBox">
+      <h2>Export video</h2>
+      <label>Quality
+        <select id="exportQuality">
+          <option value="720">720p</option>
+          <option value="1080">1080p</option>
+          <option value="2160">4K</option>
+        </select>
+      </label>
+      <p class="note">Browser export uses WebM where supported. True 4K MP4 encoding needs a server/FFmpeg pipeline.</p>
+      <button id="startExport" class="primary">Export</button>
+      <button id="closeExport">Cancel</button>
+      <div id="exportStatus"></div><div id="exportProgress" class="progress"><div id="exportBar"></div></div>
+    </div>
+  </div>
+
+<script src="config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
