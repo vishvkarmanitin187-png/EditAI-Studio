@@ -249,8 +249,11 @@ app.post('/api/text', (req, res) => {
         .run();
 });
 
-// 8b. Speech-to-Text Auto Captions Route
-app.post('/api/captions', (req, res) => {
+// 8b. Speech-to-Text Auto Captions Routes
+app.post('/api/captions', handleTranscribe);
+app.post('/api/captions/transcribe', handleTranscribe);
+
+function handleTranscribe(req, res) {
     const { filename } = req.body;
     const sttApiKey = process.env.STT_API_KEY || process.env.OPENAI_API_KEY;
     if (!sttApiKey) {
@@ -267,7 +270,7 @@ app.post('/api/captions', (req, res) => {
             { start: 6.8, end: 10.0, text: "Export high-resolution 4K masterpieces." }
         ]
     });
-});
+}
 
 // 9. Export Final MP4 Route
 app.post('/api/export', (req, res) => {
