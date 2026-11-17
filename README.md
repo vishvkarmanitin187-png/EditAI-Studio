@@ -1,86 +1,33 @@
-# EditFlux Real Video Editor
-
-EditFlux is a production-ready, original web video editor built with a React + Vite frontend and a Node.js + Express + FFmpeg backend for real video processing and rendering.
-
----
-
-## 📁 Complete File Tree
-```
-├── server.js              # Node.js + Express + FFmpeg Backend
-├── package.json           # Project dependencies & scripts
-├── .env.example           # Environment variables template
-├── .gitignore             # Git ignore rules
-├── README.md              # Documentation & deployment guide
-├── public/                # Static assets & HTML
-└── src/                   # React frontend application
-```
-
----
-
-## 🔍 Architecture Overview
-- **Backend**: `server.js` (Contains Express routes for upload, trim, split, speed, rotate, volume, text overlay, and real MP4 export using `fluent-ffmpeg`).
-- **Frontend**: React + Vite (Mobile-first dark video editor interface with timeline, preview, scrubbing, and toolbars).
-
----
-
-## 🚀 Installation & Local Development
-
-1. **Clone the repository & install dependencies**:
-   ```bash
-   git clone https://github.com/your-username/editflux.git
-   cd editflux
-   npm install
-   ```
-
-2. **Configure Environment Variables**:
-   Copy `.env.example` to `.env` and set your variables:
-   ```bash
-   cp .env.example .env
-   ```
-
-3. **Run the Backend Server & Frontend**:
-   ```bash
-   npm start
-   ```
-
----
-
-## 🚀 GitHub Upload Instructions
-
-1. Initialize git in your local project directory:
-   ```bash
-   git init
-   git add .
-   git commit -m "Initial commit: EditFlux video editor"
-   ```
-2. Create a new repository on GitHub.
-3. Link your remote and push:
-   ```bash
-   git remote add origin https://github.com/your-username/editflux.git
-   git branch -M main
-   git push -u origin main
-   ```
-
----
-
-## 🌐 Deployment Instructions
-
-### 1. Vercel Frontend Deployment
-*Note: Vercel serverless functions cannot reliably run heavy FFmpeg video rendering tasks. Deploy the React frontend to Vercel and point it to your dedicated Node/FFmpeg backend.*
-
-1. Push your repository to GitHub.
-2. Import the project into [Vercel](https://vercel.com).
-3. Set the Build Command: `npm run build`
-4. Set the Output Directory: `dist`
-5. Add Environment Variable in Vercel Dashboard:
-   - `VITE_API_URL` = `https://your-backend-server.render.com` (or your cloud server URL)
-
-### 2. Backend Deployment (Render / Railway / Docker VPS)
-*Deploy `server.js` and FFmpeg to a container or server supporting FFmpeg:*
-
-1. Create a Web Service on Render.com or Railway.app connected to your GitHub repository.
-2. Ensure the build command installs FFmpeg (Render/Railway node environments include FFmpeg or buildpacks install it automatically).
-3. Start Command: `node server.js`
-4. Set Environment Variables:
-   - `PORT` = `5000`
-   - `NODE_ENV` = `production`
+CREATORVERSE AI – Android Starter Project
+यह Android Studio के लिए शुरुआती Kotlin + Jetpack Compose प्रोजेक्ट है।
+इस build में अभी क्या काम करता है
+Home dashboard और bottom navigation
+Hindi, English और Hinglish में template-based script draft
+Caption और hashtag draft
+Draft को clipboard में copy करना और दूसरी apps में share करना
+फोन से video चुनना (अभी केवल selection; editing/rendering नहीं)
+अभी क्या शामिल नहीं है
+यह पूरा production-ready creator platform या final video editor नहीं है।
+Live cloud AI/API connection नहीं है
+Video trimming, effects, transitions और final MP4 export engine नहीं है
+YouTube/Instagram/Facebook login, publishing या analytics integration नहीं है
+Payments, user accounts, cloud database और premium billing नहीं हैं
+इनके लिए backend, API credentials, platform approvals और अलग development phases चाहिए।
+Android Studio में खोलने का तरीका
+ZIP extract करें।
+Android Studio में Open चुनें और CREATORVERSE_AI_Android folder खोलें।
+Gradle sync पूरा होने दें। जरूरत पड़े तो Android SDK Platform 35 install करें।
+Android Studio में Run दबाएँ या Build > Build Bundle(s) / APK(s) > Build APK(s) चुनें।
+Debug APK सामान्यतः app/build/outputs/apk/debug/app-debug.apk में बनेगा।
+आवश्यकताएँ
+Android Studio का हाल का stable version
+JDK 17
+Android SDK Platform 35
+इंटरनेट (पहली बार Gradle dependencies डाउनलोड करने के लिए)
+अगला development चरण
+Real AI backend और secure API proxy
+Video player + timeline editor + export pipeline
+Thumbnail generation और media tools
+Official YouTube/Meta integrations
+Authentication, cloud storage और subscription billing
+API keys को कभी भी Android source code में hardcode न करें।
